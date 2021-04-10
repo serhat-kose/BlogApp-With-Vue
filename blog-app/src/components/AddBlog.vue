@@ -1,23 +1,43 @@
 <template>
     <div id ="add-blog">
-        <h2>Yeni Makale Ekle</h2>
-        <form >
+        <form v-if="!submitted">
+              <h2>Yeni Makale Ekle</h2>
             <label >Başlık :</label>
             <input type="text" v-model.lazy="blog.title">
                         <label >İçerik :</label>
             <textarea v-model.lazy="blog.content"></textarea>
+            <div id="checkboxes">
+                <p >Makale Kategorileri:</p>
+                <label >Yazılım</label>
+                <input type="checkbox" value="yazılım" v-model="blog.categories"/>
+                   <label >Hayat</label>
+                <input type="checkbox" value="hayat" v-model="blog.categories"/>
+                   <label >Spor</label>
+                <input type="checkbox" value="spor" v-model="blog.categories"/>
+            </div>
+            <label >Yazar </label>
+            <select v-model="blog.author" ><option v-for="(data,index) in authors" :key="index">{{data}}</option>
+            </select>
+            <button @click.prevent="post">Ekle</button>
         </form>
         <div id="preview">
             <h3>Makale Önizleme</h3>
             <p>Makale Başlık : {{blog.title}}</p>
               <p>Makale İçerik :</p>
                 <p> {{blog.content}}</p>
+                <p>Makale Kategorileri</p>
+                <ul>
+                    <li v-for="(data,index) in blog.categories" :key="index">{{data}}</li>
+                </ul>
+                <p>Yazar : {{blog.author}}</p>
         </div>
+        <div v-if="submitted">
+            <h3>Makale Eklendi</h3>
+            </div>
     </div>
 </template>
 
 <script>
-
 
 export default ({
   name:'AddBlog',
@@ -25,9 +45,25 @@ export default ({
       return{
           blog: {
               title:'',
-              content:''
+              content:'',
+              categories : [],
+              author :''
 
-          }
+          },
+          authors:["ALi","Veli","Ahmet"],
+          submitted:false
+      }
+  },
+  methods:{
+      post:function(){
+          this.$http.post('https://jsonplaceholder.typicode.com/posts',{
+              title:this.blog.title,
+              body: this.blog.content,
+              userId:1
+          }).then(function(data){
+              console.log(data);
+              this.submitted=true;
+          })
       }
   }
 })
@@ -37,6 +73,16 @@ export default ({
 #add-blog{
     margin: 20px auto;
     max-width: 500px;
+
+}
+
+#checkboxes{
+    display: inline-block;
+    margin-right: 10px;
+}
+#checkboxes label{
+    display: inline-block;
+    margin-right: 10px;
 
 }
 label{
