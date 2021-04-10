@@ -1,9 +1,10 @@
 <template>
-  <div id="show-blogs">
+  <div v-tema:kolon="'uzun'" id="show-blogs">
+      <input class="input" type="text" v-model="search" placeholder="Makale Ara" />
       <h1>Makaleler</h1>
-      <div v-for="(data,index) in blogs" :key="index" class="single-blog">
-          <h3>{{data.title}}</h3>
-          <article>{{data.body}}</article>
+      <div v-for="(data,index) in filteredBlogs" :key="index" class="single-blog">
+          <h3>{{data.title | uppercase}}</h3>
+          <article>{{data.body | snipped}}</article>
       </div>
   </div>
 </template>
@@ -14,7 +15,8 @@ export default {
     name:'ShowBlogs',
     data(){
         return{
-            blogs:[]
+            blogs:[],
+            search:''
         }
     },
     created(){
@@ -22,6 +24,14 @@ export default {
            // console.log(data);
             this.blogs=data.body.slice(0,10);
         })
+    },
+    computed:{
+        filteredBlogs:function(){
+
+            return this.blogs.filter((blog)=>{
+                return blog.title.match(this.search)
+            })
+        }
     }
 
 }
@@ -29,7 +39,7 @@ export default {
 
 <style scoped>
 body{
-    background-color: #f8c291;
+    background-color: #e5f891;
 }
 #show-blogs{
     max-width: 800px;
@@ -40,6 +50,13 @@ body{
     margin: 20px 0;
     box-sizing: border-box;
     background: #38ada9;
+}
+.input{
+    padding: 10px;
+    text-align: center;
+    background-color: #e1e2d5;
+    display: block;
+    width: 100%;
 }
 </style>>
 
