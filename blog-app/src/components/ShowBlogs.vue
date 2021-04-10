@@ -3,9 +3,13 @@
       <input class="input" type="text" v-model="search" placeholder="Makale Ara" />
       <h1>Makaleler</h1>
       <div v-for="(data,index) in filteredBlogs" :key="index" class="single-blog">
+           <router-link :to="'/blog/'+data.id">
           <h3>{{data.title | uppercase}}</h3>
-          <article>{{data.body | snipped}}</article>
+         
+          </router-link>
+           <article>{{data.body | snipped}}</article>
       </div>
+     
   </div>
 </template>
 
