@@ -1,11 +1,12 @@
 <template>
     <div id="single-blog">
         <h1>{{blog.title}}</h1>
-        <article>{{blog.body}}</article>
+        <article>{{blog.content}}</article>
     </div>
 </template>
 
 <script>
+
 export default {
     name:'SingleBlog',
     data(){
@@ -15,9 +16,12 @@ export default {
         }
     },
      created(){
-        this.$http.get('https://jsonplaceholder.typicode.com/posts/'+this.id).then(function(data){
+        this.$http.get('https://blog-app-vue-default-rtdb.firebaseio.com/post/'+this.id+'.json').then(function
+        (data){
            // console.log(data);
-            this.blog=data.body;
+            return data.json();
+        }).then(function(data){
+            this.blog=data;
         })
     }
 }

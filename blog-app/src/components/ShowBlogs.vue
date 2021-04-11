@@ -7,7 +7,7 @@
           <h3>{{data.title | uppercase}}</h3>
          
           </router-link>
-           <article>{{data.body | snipped}}</article>
+           <article>{{data.content | snipped}}</article>
       </div>
      
   </div>
@@ -24,10 +24,22 @@ export default {
         }
     },
     created(){
-        this.$http.get('https://jsonplaceholder.typicode.com/posts').then(function(data){
+        this.$http.get('https://blog-app-vue-default-rtdb.firebaseio.com/post.json').then(function(data){
            // console.log(data);
-            this.blogs=data.body.slice(0,10);
+            return data.json();
+        }).then(function(data){
+            var blogsArray=[];
+            for(let key in data){
+                data[key].id=key;
+                blogsArray.push(data[key]);
+            }
+
+            this.blogs=blogsArray;
         })
+
+        
+
+        
     },
     computed:{
         filteredBlogs:function(){
