@@ -2,6 +2,11 @@
     <div id="single-blog">
         <h1>{{blog.title}}</h1>
         <article>{{blog.content}}</article>
+        <p>Yazar : {{blog.author}}</p>
+        <p>Kategorileri</p>
+        <ul>
+            <li v-for="(data,index) in blog.categories" :key="index">{{data}}</li>
+        </ul>
     </div>
 </template>
 
